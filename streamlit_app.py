@@ -33,80 +33,157 @@ if 'high_score' not in st.session_state:
 # Enhanced CSS with game animations
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
-    
-    * {
-        font-family: 'Poppins', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+    /* ── Global – large readable text for all ages ── */
+    html, body, [class*="css"] {
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 20px !important;
+        color: #1a1a2e !important;
     }
-    
+
+    /* Sidebar bigger text */
+    section[data-testid="stSidebar"] * {
+        font-size: 18px !important;
+    }
+    section[data-testid="stSidebar"] .stSelectbox label,
+    section[data-testid="stSidebar"] .stMetric label {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+    }
+
+    /* All labels, inputs, sliders bigger */
+    label, .stTextInput label, .stNumberInput label,
+    .stSelectbox label, .stSlider label {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #1a1a2e !important;
+    }
+    input, select, textarea {
+        font-size: 20px !important;
+        padding: 12px !important;
+    }
+
+    /* Big bold buttons */
+    .stButton > button {
+        background: #1a56db !important;
+        color: #ffffff !important;
+        font-size: 20px !important;
+        font-weight: 800 !important;
+        padding: 18px 36px !important;
+        border-radius: 16px !important;
+        border: none !important;
+        box-shadow: 0 6px 20px rgba(26,86,219,0.35) !important;
+        transition: all 0.2s ease !important;
+        width: 100%;
+    }
+    .stButton > button:hover {
+        background: #1e40af !important;
+        box-shadow: 0 8px 28px rgba(26,86,219,0.5) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* Main title */
     .main-title {
-        font-size: 4.5rem !important;
-        font-weight: 800;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 3.8rem !important;
+        font-weight: 900;
+        color: #1a1a2e !important;
         text-align: center;
-        margin-bottom: 0.5rem;
-        animation: glow 2s ease-in-out infinite alternate;
+        letter-spacing: -1px;
+        margin-bottom: 0.3rem;
     }
-    
-    @keyframes glow {
-        from { filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5)); }
-        to { filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.8)); }
+    .main-title span { color: #1a56db; }
+
+    /* Cards – white, strong border, big padding */
+    .feature-card {
+        background: #ffffff;
+        padding: 28px 32px;
+        border-radius: 20px;
+        border-left: 8px solid #1a56db;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin: 16px 0;
+        font-size: 19px;
+        color: #1a1a2e;
     }
-    
+    .feature-card h2, .feature-card h3 { color: #1a1a2e; font-weight: 800; }
+
     .game-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 30px;
+        background: #1a56db;
+        padding: 32px;
         border-radius: 20px;
-        color: white;
+        color: #ffffff;
         text-align: center;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
-        margin: 20px 0;
-        cursor: pointer;
+        box-shadow: 0 6px 24px rgba(26,86,219,0.4);
+        margin: 16px 0;
+        font-size: 19px;
     }
-    
-    .game-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
-    }
-    
+    .game-card h3, .game-card h4 { color: #ffffff; font-weight: 800; }
+
     .meditation-card {
-        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        padding: 30px;
+        background: #ecfdf5;
+        border: 3px solid #059669;
+        padding: 28px;
         border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(168, 237, 234, 0.4);
+        margin: 16px 0;
+        font-size: 19px;
+        color: #064e3b;
+    }
+
+    .info-box {
+        background: #eff6ff;
+        border-left: 8px solid #1a56db;
+        padding: 24px 28px;
+        border-radius: 16px;
         margin: 20px 0;
-        transition: all 0.3s ease;
+        font-size: 19px;
+        color: #1e3a8a;
     }
-    
-    .meditation-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 12px 40px rgba(168, 237, 234, 0.6);
+
+    .warning-box {
+        background: #fffbeb;
+        border-left: 8px solid #d97706;
+        padding: 24px 28px;
+        border-radius: 16px;
+        margin: 20px 0;
+        font-size: 19px;
+        color: #78350f;
     }
-    
-    .calm-button {
-        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        color: #333;
-        padding: 15px 40px;
-        border-radius: 30px;
-        border: none;
-        font-size: 1.2rem;
-        font-weight: 600;
-        box-shadow: 0 5px 20px rgba(168, 237, 234, 0.4);
-        transition: all 0.3s ease;
+
+    .risk-card-high {
+        background: #dc2626;
+        color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        box-shadow: 0 8px 30px rgba(220,38,38,0.4);
     }
-    
-    .calm-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(168, 237, 234, 0.6);
+    .risk-card-medium {
+        background: #d97706;
+        color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        box-shadow: 0 8px 30px rgba(217,119,6,0.4);
     }
-    
+    .risk-card-low {
+        background: #059669;
+        color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        box-shadow: 0 8px 30px rgba(5,150,105,0.4);
+    }
+
     .breathing-circle {
-        width: 200px;
-        height: 200px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 220px;
+        height: 220px;
+        background: #1a56db;
         border-radius: 50%;
         margin: 30px auto;
         animation: breathe 4s ease-in-out infinite;
@@ -114,126 +191,65 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 1.5rem;
-        font-weight: 600;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        font-size: 1.6rem;
+        font-weight: 800;
     }
-    
     @keyframes breathe {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.3); opacity: 1; }
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.28); }
     }
-    
+
     .zen-quote {
-        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        padding: 30px;
-        border-radius: 15px;
+        background: #fef3c7;
+        border: 3px solid #d97706;
+        padding: 28px;
+        border-radius: 16px;
         text-align: center;
         font-size: 1.3rem;
         font-style: italic;
-        color: #333;
-        box-shadow: 0 5px 20px rgba(255, 236, 210, 0.5);
+        color: #78350f;
         margin: 20px 0;
+        font-weight: 600;
     }
-    
+
+    .music-player {
+        background: #f0fdf4;
+        border: 3px solid #059669;
+        padding: 24px;
+        border-radius: 16px;
+        margin: 16px 0;
+        font-size: 19px;
+        color: #064e3b;
+    }
+
     .timer-display {
         font-size: 4rem;
-        font-weight: 800;
+        font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #1a56db;
         margin: 20px 0;
     }
-    
-    .music-player {
-        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        padding: 25px;
-        border-radius: 15px;
-        margin: 20px 0;
-        box-shadow: 0 5px 20px rgba(255, 236, 210, 0.5);
+
+    /* Metrics larger */
+    [data-testid="stMetricValue"] {
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        color: #1a1a2e !important;
     }
-    
-    .risk-card-high {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-        color: white;
-        padding: 40px;
-        border-radius: 20px;
-        text-align: center;
-        box-shadow: 0 10px 40px rgba(255, 107, 107, 0.4);
-        animation: slideIn 0.5s ease-out;
+    [data-testid="stMetricLabel"] {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
     }
-    
-    .risk-card-medium {
-        background: linear-gradient(135deg, #ffd93d 0%, #f6b93b 100%);
-        color: white;
-        padding: 40px;
-        border-radius: 20px;
-        text-align: center;
-        box-shadow: 0 10px 40px rgba(255, 217, 61, 0.4);
-        animation: slideIn 0.5s ease-out;
-    }
-    
-    .risk-card-low {
-        background: linear-gradient(135deg, #6bcf7f 0%, #4caf50 100%);
-        color: white;
-        padding: 40px;
-        border-radius: 20px;
-        text-align: center;
-        box-shadow: 0 10px 40px rgba(107, 207, 127, 0.4);
-        animation: slideIn 0.5s ease-out;
-    }
-    
+
+    /* Headers */
+    h1 { font-size: 2.5rem !important; font-weight: 900 !important; color: #1a1a2e !important; }
+    h2 { font-size: 2rem !important; font-weight: 800 !important; color: #1a1a2e !important; }
+    h3 { font-size: 1.6rem !important; font-weight: 700 !important; color: #1a1a2e !important; }
+    p, li { font-size: 1.15rem !important; line-height: 1.9 !important; color: #1a1a2e !important; }
+
     @keyframes slideIn {
-        from { opacity: 0; transform: translateY(30px); }
+        from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .feature-card {
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        margin: 15px 0;
-        border-left: 6px solid #667eea;
-        transition: all 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    }
-    
-    .info-box {
-        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-        padding: 25px;
-        border-radius: 15px;
-        border-left: 5px solid #0284c7;
-        margin: 20px 0;
-    }
-    
-    .warning-box {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        padding: 25px;
-        border-radius: 15px;
-        border-left: 5px solid #f59e0b;
-        margin: 20px 0;
-    }
-    
-    .stButton>button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: 600;
-        padding: 15px 30px;
-        border-radius: 15px;
-        border: none;
-        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
-    }
-    
-    .stButton>button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -381,8 +397,8 @@ Generated by DiabetCare AI © 2024
     return report
 
 def main():
-    st.markdown('<h1 class="main-title">🏥 DiabetCare</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align:center;font-size:1.5rem;color:#718096;">Complete Diabetes Wellness Platform</p>', 
+    st.markdown('<h1 class="main-title">🏥 <span>Diabet</span>Care</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align:center;font-size:1.4rem;font-weight:700;color:#1a56db;letter-spacing:1px;">Complete Diabetes Wellness Platform</p>', 
                 unsafe_allow_html=True)
     
     df, error = load_data()
