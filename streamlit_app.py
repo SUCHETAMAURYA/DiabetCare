@@ -894,54 +894,174 @@ def show_video_library():
         st.markdown("---")
 
 def show_exercise():
-    st.header("💪 Exercise Library")
-    
-    category = st.selectbox("Category:", 
-        ["🏃 Cardio", "🏋️ Strength", "🧘 Yoga", "🚶 Walking"])
-    
-    if category == "🏃 Cardio":
-        exercises = [
-            ("Brisk Walking", "30 min", "Moderate", "150 cal",
-             "https://youtu.be/nmvVfgrExAg?si=bdXyxsVuSGDZ-waT"),
-            ("Jogging", "20-30 min", "High", "300 cal",
-             "https://youtu.be/ZTBRQ5MEJsE?si=lEFbtHnmh7GyIjot"),
-            ("Cycling", "30-45 min", "Moderate", "300 cal",
-             "https://youtu.be/rEqRmKAQ5xM?si=3kEDBLRpwkG2vgxxY"),
-            ("Swimming", "30 min", "Moderate", "300 cal",
-             "https://youtu.be/HLwLuOIw4cA?si=OMFjAm2Xq8jMoVyN")
-        ]
-    elif category == "🏋️ Strength":
-        exercises = [
-            ("Squats", "3x15", "Moderate", "70 cal",
-             "https://youtu.be/xqvCmoLULNY?si=7JwA-qDzUCIfE1Nk"),
-            ("Push-ups", "3x12", "Moderate", "40 cal",
-             "https://youtu.be/9-DlYB4vO4U?si=-CV_9JzpGaxdoBLs"),
-            ("Planks", "3x45s", "Moderate", "25 cal",
-             "https://youtu.be/6LqqeBtFn9M?si=LzRGArliRneZ7qVV")
-        ]
-    elif category == "🧘 Yoga":
-        exercises = [
-            ("Beginners Yoga", "20min", "Low", "125 cal",
-             "https://youtu.be/v7AYKMP6rOE"),
-            ("Diabetes Yoga", "25min", "Low", "100 cal",
-             "https://youtu.be/8D1_HX3gVRk")
-        ]
-    else:
-        exercises = [
-            ("Beginner Walk", "20min", "Low", "125 cal",
-             "https://youtu.be/r93-oXgDG20"),
-            ("Power Walk", "30min", "Moderate", "200 cal",
-             "https://youtu.be/N7oIjWOqxjU")
-        ]
-    
-    for name, dur, intensity, cal, link in exercises:
-        st.markdown(f"""
-        <div class="feature-card">
-        <h3>{name}</h3>
-        <p>⏱️ {dur} | 💪 {intensity} | 🔥 {cal}</p>
+    st.header("💪 Exercise Recommendations")
+
+    st.markdown("""
+    <div class="info-box">
+    <h4>🎯 Personalised for your age, condition & injuries</h4>
+    <p>Tell us about yourself and we'll show only safe, suitable exercises for you.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        age_group = st.selectbox("👤 Your Age Group", [
+            "👧 Child (5–12 yrs)",
+            "🧑 Teen (13–17 yrs)",
+            "🧑‍💼 Young Adult (18–35 yrs)",
+            "🧑‍🦱 Adult (36–55 yrs)",
+            "🧓 Senior (56–70 yrs)",
+            "👴 Elderly (70+ yrs)"
+        ])
+    with col2:
+        fitness = st.selectbox("💪 Fitness Level", ["Beginner", "Intermediate", "Active"])
+
+    st.markdown("#### 🩹 Do you have any injuries or conditions?")
+    col3, col4, col5 = st.columns(3)
+    with col3:
+        knee = st.checkbox("🦵 Knee problem / fracture")
+        back = st.checkbox("🔙 Back pain / spine issue")
+    with col4:
+        shoulder = st.checkbox("💪 Shoulder / arm injury")
+        heart = st.checkbox("❤️ Heart condition")
+    with col5:
+        foot = st.checkbox("🦶 Foot / ankle problem")
+        post_surgery = st.checkbox("🏥 Recent surgery")
+
+    injuries = {"knee": knee, "back": back, "shoulder": shoulder,
+                "heart": heart, "foot": foot, "surgery": post_surgery}
+    any_injury = any(injuries.values())
+
+    if any_injury:
+        st.markdown("""
+        <div class="warning-box">
+        <h4>⚠️ Precautions for your condition</h4>
+        <ul style="font-size:1.1rem;line-height:2.2;">
+        """ + 
+        ("  <li>🦵 <strong>Knee:</strong> Avoid squats, lunges, running. Use chair support for all exercises.</li>" if knee else "") +
+        ("  <li>🔙 <strong>Back:</strong> No forward bending, heavy lifting. Lie-down exercises only.</li>" if back else "") +
+        ("  <li>💪 <strong>Shoulder:</strong> No overhead movements. Keep arms below shoulder height.</li>" if shoulder else "") +
+        ("  <li>❤️ <strong>Heart:</strong> Keep intensity LOW. Stop if chest pain or breathlessness.</li>" if heart else "") +
+        ("  <li>🦶 <strong>Foot/Ankle:</strong> Seated or water exercises only. No jumping.</li>" if foot else "") +
+        ("  <li>🏥 <strong>Post-surgery:</strong> Only gentle stretching. Consult doctor before any exercise.</li>" if post_surgery else "") +
+        """
+        </ul>
+        <p><strong>Always consult your doctor before starting. Stop immediately if pain increases.</strong></p>
         </div>
         """, unsafe_allow_html=True)
-        st.markdown(f"[🎥 Watch Video]({link})")
+
+    # Exercise database by age group
+    exercise_db = {
+        "👧 Child (5–12 yrs)": {
+            "description": "Fun, playful activities to keep blood sugar balanced",
+            "exercises": [
+                ("🏃 Running & Playing", "20–30 min", "Moderate", "~150 cal", "Play tag, run in park — keeps glucose in check", "https://www.youtube.com/watch?v=FHmYVqLFrqE", ["foot"]),
+                ("🚴 Cycling", "20 min", "Low-Mod", "~100 cal", "Great for joints, fun for kids", "https://www.youtube.com/watch?v=8koQXUmPNKQ", ["knee", "surgery"]),
+                ("🤸 Jumping Jacks", "10 min", "Moderate", "~80 cal", "Full body, boosts energy", "https://www.youtube.com/watch?v=CWpmIW6l-YA", ["knee", "foot", "heart"]),
+                ("🧘 Kids Yoga", "15 min", "Low", "~50 cal", "Calm, flexible, great for focus", "https://www.youtube.com/watch?v=X655B4ISakg", []),
+                ("💃 Dance & Movement", "20 min", "Moderate", "~120 cal", "Fun way to burn sugar", "https://www.youtube.com/watch?v=JpQpAkuyKIk", ["foot", "heart"]),
+            ]
+        },
+        "🧑 Teen (13–17 yrs)": {
+            "description": "Build strength, manage stress & control blood sugar",
+            "exercises": [
+                ("🏃 Jogging", "20–30 min", "Moderate", "~250 cal", "Best for blood sugar control", "https://www.youtube.com/watch?v=kVnyY17VS9Y", ["knee", "foot", "heart"]),
+                ("💪 Bodyweight Workout", "25 min", "Moderate", "~200 cal", "Push-ups, squats, planks", "https://www.youtube.com/watch?v=vc1E5CfRfos", ["knee", "shoulder", "back", "surgery"]),
+                ("🏊 Swimming", "30 min", "Moderate", "~300 cal", "Easiest on joints, full body", "https://www.youtube.com/watch?v=gh5mAtmeR3w", []),
+                ("🧘 Teen Yoga", "20 min", "Low", "~100 cal", "Reduces stress hormones that raise blood sugar", "https://www.youtube.com/watch?v=gZPMGTG9-to", []),
+                ("🚴 Cycling", "30 min", "Moderate", "~250 cal", "Great cardio, easy on knees", "https://www.youtube.com/watch?v=8koQXUmPNKQ", ["knee", "surgery"]),
+            ]
+        },
+        "🧑‍💼 Young Adult (18–35 yrs)": {
+            "description": "Peak metabolism — build habits that last a lifetime",
+            "exercises": [
+                ("🏃 Running", "30 min", "High", "~350 cal", "Best blood sugar management exercise", "https://www.youtube.com/watch?v=kVnyY17VS9Y", ["knee", "foot", "heart"]),
+                ("🏋️ Strength Training", "40 min", "High", "~300 cal", "Builds muscle that absorbs glucose", "https://www.youtube.com/watch?v=vc1E5CfRfos", ["knee", "shoulder", "back", "surgery"]),
+                ("🧘 Vinyasa Yoga", "30 min", "Moderate", "~200 cal", "Stress + sugar control together", "https://www.youtube.com/watch?v=9kOCY0KNByw", []),
+                ("🏊 Swimming", "30 min", "Moderate", "~350 cal", "Full body, joint friendly", "https://www.youtube.com/watch?v=gh5mAtmeR3w", []),
+                ("🚴 HIIT Cycling", "20 min", "High", "~300 cal", "Short but very effective for insulin sensitivity", "https://www.youtube.com/watch?v=mmq5zZfmIws", ["knee", "heart", "surgery"]),
+            ]
+        },
+        "🧑‍🦱 Adult (36–55 yrs)": {
+            "description": "Consistent moderate exercise — key age for prevention",
+            "exercises": [
+                ("🚶 Brisk Walking", "45 min", "Moderate", "~200 cal", "Most sustainable for blood sugar", "https://www.youtube.com/watch?v=njeZ29umqVE", []),
+                ("🧘 Diabetes Yoga", "30 min", "Low-Mod", "~150 cal", "Designed for diabetics", "https://www.youtube.com/watch?v=v7AYKMP6rOE", []),
+                ("🏊 Swimming", "30 min", "Moderate", "~300 cal", "Protects joints, high calorie burn", "https://www.youtube.com/watch?v=gh5mAtmeR3w", []),
+                ("💪 Resistance Bands", "30 min", "Moderate", "~180 cal", "Safe strength training for this age", "https://www.youtube.com/watch?v=4VuBqUOFDZM", ["surgery"]),
+                ("🚴 Stationary Cycling", "30 min", "Moderate", "~250 cal", "Low impact, high benefit", "https://www.youtube.com/watch?v=mmq5zZfmIws", ["knee", "foot"]),
+            ]
+        },
+        "🧓 Senior (56–70 yrs)": {
+            "description": "Safe, joint-friendly exercises for blood sugar & balance",
+            "exercises": [
+                ("🚶 Easy Walking", "30 min", "Low", "~130 cal", "Best daily habit for seniors", "https://www.youtube.com/watch?v=njeZ29umqVE", []),
+                ("🧘 Chair Yoga", "20 min", "Low", "~80 cal", "Seated yoga — safe for everyone", "https://www.youtube.com/watch?v=qXNXGBgaWVk", []),
+                ("🏊 Water Aerobics", "30 min", "Low-Mod", "~200 cal", "Zero joint stress, great resistance", "https://www.youtube.com/watch?v=R3s7H7gupC4", []),
+                ("💪 Light Stretching", "15 min", "Low", "~50 cal", "Improves circulation & flexibility", "https://www.youtube.com/watch?v=L_xrDAtykMI", []),
+                ("⚖️ Balance Exercises", "15 min", "Low", "~60 cal", "Prevents falls, improves stability", "https://www.youtube.com/watch?v=RQV3M2r9fKU", ["surgery"]),
+            ]
+        },
+        "👴 Elderly (70+ yrs)": {
+            "description": "Gentle daily movement — even 10 minutes helps significantly",
+            "exercises": [
+                ("🪑 Seated Chair Exercises", "15 min", "Low", "~50 cal", "Safe for all conditions", "https://www.youtube.com/watch?v=qXNXGBgaWVk", []),
+                ("🚶 Short Gentle Walks", "15–20 min", "Low", "~70 cal", "After meals especially helpful for sugar", "https://www.youtube.com/watch?v=njeZ29umqVE", []),
+                ("🧘 Gentle Stretching", "10 min", "Low", "~30 cal", "Morning routine to start day well", "https://www.youtube.com/watch?v=L_xrDAtykMI", []),
+                ("🤲 Hand & Foot Exercises", "10 min", "Low", "~20 cal", "Improves circulation in extremities", "https://www.youtube.com/watch?v=tz8sGVXhMDE", []),
+                ("🌬️ Breathing Exercises", "10 min", "Low", "~15 cal", "Reduces stress, improves oxygen", "https://www.youtube.com/watch?v=tEmt1Znux58", []),
+            ]
+        }
+    }
+
+    group_data = exercise_db[age_group]
+    st.markdown(f"""
+    <div class="feature-card">
+    <h3>{age_group} — {group_data['description']}</h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    shown = 0
+    for name, dur, intensity, cal, desc, link, blocked_for in group_data["exercises"]:
+        # Check if this exercise is blocked for user's injury
+        is_blocked = any(injuries.get(inj, False) for inj in blocked_for)
+        if is_blocked:
+            st.markdown(f"""
+            <div style="background:#fff1f1;border-left:8px solid #dc2626;padding:20px 24px;
+            border-radius:16px;margin:12px 0;opacity:0.7;">
+            <h3 style="color:#dc2626;">🚫 {name} — Not Recommended</h3>
+            <p style="color:#7f1d1d;">This exercise may aggravate your current condition. Skip this one.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            shown += 1
+            intensity_color = {"Low": "#059669", "Low-Mod": "#0891b2", "Moderate": "#d97706", "High": "#dc2626"}.get(intensity, "#1a56db")
+            st.markdown(f"""
+            <div class="feature-card">
+            <h3>{name}</h3>
+            <p>⏱️ <strong>{dur}</strong> &nbsp;|&nbsp; 
+               💪 <strong style="color:{intensity_color};">{intensity}</strong> &nbsp;|&nbsp; 
+               🔥 <strong>{cal}</strong></p>
+            <p style="color:#374151;">{desc}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            col_a, col_b = st.columns([3,1])
+            with col_a:
+                st.markdown(f"[🎥 Watch Exercise Video]({link})")
+            with col_b:
+                if st.button(f"✅ Done!", key=f"ex_{name}"):
+                    st.session_state.total_points += 25
+                    st.session_state.exercise_done = True
+                    st.success("🎉 +25 points!")
+
+    if shown == 0:
+        st.markdown("""
+        <div class="warning-box">
+        <h3>⚠️ All exercises restricted due to your conditions</h3>
+        <p>Please consult your doctor for a personalised physiotherapy plan. 
+        In the meantime, try the <strong>🌬️ Breathing Exercises</strong> in the Meditation section — they are always safe.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 def show_data(df):
     if df is None:
