@@ -5,9 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/yourusername/diabetcare/graphs/commit-activity)
 
-<div align="center">
-  <img src="https://img.icons8.com/clouds/200/000000/medical-heart.png" alt="DiabetCare Logo" width="200"/>
-  
+
   ### *Your Complete AI-Powered Companion for Diabetes Prevention & Emotional Wellness*
   
   [Live Demo](https://diabetcare.streamlit.app/) • [Documentation](#features) • [Report Bug](#support) • [Request Feature](#contributing)
