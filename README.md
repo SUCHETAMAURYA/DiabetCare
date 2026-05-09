@@ -366,13 +366,6 @@ streamlit run diabetes_app.py
 
 ## 📞 Support & Contact
 
-### Get Help
-
-- 📧 **Email:** support@diabetcare.com
-- 💬 **Discord:** [Join our community](https://discord.gg/diabetcare)
-- 🐦 **Twitter:** [@DiabetCare](https://twitter.com/diabetcare)
-- 📺 **YouTube:** [Tutorial Videos](https://youtube.com/diabetcare)
-
 ### Emergency Medical Help
 
 🚨 **In case of medical emergency:**
@@ -401,26 +394,6 @@ streamlit run diabetes_app.py
 2. WHO. (2023). Obesity and overweight fact sheets
 3. Mokdad, A.H., et al. (2003). Prevalence of obesity, diabetes, and obesity-related health risk factors
 4. Centers for Disease Control and Prevention. (2023). Diabetes Prevention Program
-
----
-
-## 📊 Project Statistics
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/diabetcare?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/diabetcare?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/yourusername/diabetcare?style=social)
-
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/diabetcare)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/diabetcare)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/diabetcare)
-
----
-
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/diabetcare&type=Date)](https://star-history.com/#yourusername/diabetcare&Date)
-
----
 
 <div align="center">
 
